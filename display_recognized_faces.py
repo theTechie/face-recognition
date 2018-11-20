@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 from pathlib import Path
 import recognize_face
 
-know_path = Path("data/known_people")
+know_path = Path("data/sample-2/jpeg/picked/known")
 known_images = list(know_path.glob('*.jpeg'))
 
 known_face_encodings = []
@@ -13,12 +13,12 @@ known_faces = [recognize_face.image_to_known_face(str(image_path), image_path.na
 
 print('I just learned to recognize %d persons... \n' % len(known_images))
 
-unknown_path = Path("data/train")
+unknown_path = Path("data/sample-2/jpeg/picked/unknown")
 unknown_images = list(unknown_path.glob('**/*.jpeg'))
 
 print('I am starting to identify %d unknown persons; lets see how many i know !! \n' % len(unknown_images))
 
-output_path = Path("data/output")
+output_path = Path("data/sample-2/output")
 
 for image_to_identify in unknown_images:
     unknown_image = face_recognition.load_image_file(str(image_to_identify))
@@ -39,7 +39,7 @@ for image_to_identify in unknown_images:
         draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
 
         # Draw a label with a name below the face
-        label = name + ' ' + distance
+        label = name + ' ' + str(distance)
         text_width, text_height = draw.textsize(label)
         draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=(0, 0, 255), outline=(0, 0, 255))
         draw.text((left + 6, bottom - text_height - 5), label, fill=(255, 255, 255, 255))
