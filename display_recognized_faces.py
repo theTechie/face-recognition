@@ -34,14 +34,15 @@ for image_to_identify in unknown_images:
     draw = ImageDraw.Draw(pil_image)
 
     # Loop through each face found in the unknown image
-    for name, (top, right, bottom, left) in detected_faces:
+    for name, (top, right, bottom, left), distance in detected_faces:
         # Draw a box around the face using the Pillow module
         draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
 
         # Draw a label with a name below the face
-        text_width, text_height = draw.textsize(name)
+        label = name + ' ' + distance
+        text_width, text_height = draw.textsize(label)
         draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=(0, 0, 255), outline=(0, 0, 255))
-        draw.text((left + 6, bottom - text_height - 5), name, fill=(255, 255, 255, 255))
+        draw.text((left + 6, bottom - text_height - 5), label, fill=(255, 255, 255, 255))
 
     # Display the resulting image
     # pil_image.show()
