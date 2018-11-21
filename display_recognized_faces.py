@@ -9,16 +9,16 @@ known_images = list(known_path.glob('*.jpeg'))
 known_face_encodings = []
 known_face_names = []
 
-known_faces = [recognize_face.image_to_known_face(str(image_path), image_path.name) for image_path in known_images]
+known_faces = [recognize_face.image_to_known_face(str(image_path), image_path.stem) for image_path in known_images]
 
 print('I just learned to recognize %d persons... \n' % len(known_images))
 
-unknown_path = Path("data/sample-2/jpeg/picked/unknown")
+unknown_path = Path("data/sample-1/unknown_people")
 unknown_images = list(unknown_path.glob('**/*.jpeg'))
 
 print('I am starting to identify %d unknown persons; lets see how many i know !! \n' % len(unknown_images))
 
-output_path = Path("data/sample-2/output")
+output_path = Path("data/sample-1/output")
 
 for image_to_identify in unknown_images:
     unknown_image = face_recognition.load_image_file(str(image_to_identify))

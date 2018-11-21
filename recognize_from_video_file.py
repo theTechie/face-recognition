@@ -10,18 +10,18 @@ from pathlib import Path
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Open the input movie file
-input_movie = cv2.VideoCapture("data/videos/krish-gagan.mov")
+input_movie = cv2.VideoCapture("data/videos/everyone.mov")
 length = int(input_movie.get(cv2.CAP_PROP_FRAME_COUNT))
 
 # Create an output movie file (make sure resolution/frame rate matches input video!)
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-output_movie = cv2.VideoWriter('krish-out.avi', fourcc, 29.97, (1280, 720))
+fourcc = cv2.VideoWriter_fourcc(*'MP42')
+output_movie = cv2.VideoWriter('everyone.mp4', fourcc, 29.97, (1920, 1080))
 
 known_path = Path("data/sample-2/jpeg/picked/known")
 known_images = list(known_path.glob('*.jpeg'))
 
 # Load some sample pictures and learn how to recognize them.
-known_faces = [recognize_face.image_to_known_face(str(image_path), image_path.name) for image_path in known_images]
+known_faces = [recognize_face.image_to_known_face(str(image_path), image_path.stem) for image_path in known_images]
 
 # Initialize some variables
 frame_number = 0
