@@ -39,7 +39,7 @@ for image_to_identify in unknown_images:
         draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
 
         # Draw a label with a name below the face
-        label = name + ' ' + str(distance)
+        label = name + ' - ' + str("{0:.2f}".format(distance))
         text_width, text_height = draw.textsize(label)
         draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=(0, 0, 255), outline=(0, 0, 255))
         draw.text((left + 6, bottom - text_height - 5), label, fill=(255, 255, 255, 255))
