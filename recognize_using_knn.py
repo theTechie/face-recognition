@@ -147,7 +147,7 @@ def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.6):
     are_matches = [closest_distances[0][i][0] <= distance_threshold for i in range(len(X_face_locations))]
 
     # Predict classes and remove classifications that aren't within the threshold
-    return [(pred, loc) if rec else ("unknown", loc) for pred, loc, rec in zip(knn_clf.predict(faces_encodings), X_face_locations, are_matches)]
+    return [(pred, loc) if rec else ("Unknown", loc) for pred, loc, rec in zip(knn_clf.predict(faces_encodings), X_face_locations, are_matches)]
 
 
 def show_prediction_labels_on_image(img_path, predictions):
@@ -161,9 +161,17 @@ def show_prediction_labels_on_image(img_path, predictions):
     pil_image = Image.open(img_path).convert("RGB")
     draw = ImageDraw.Draw(pil_image)
 
+    known_color = (0, 255, 0)
+    unknown_color = (255, 0, 0)
+
     for name, (top, right, bottom, left) in predictions:
+        if name == 'Unknown':
+            color = unknown_color
+        else:
+            color = known_color
+
         # Draw a box around the face using the Pillow module
-        draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
+        draw.rectangle(((left, top), (right, bottom)), outline=color)
 
         # There's a bug in Pillow where it blows up with non-UTF-8 text
         # when using the default bitmap font
@@ -171,7 +179,7 @@ def show_prediction_labels_on_image(img_path, predictions):
 
         # Draw a label with a name below the face
         text_width, text_height = draw.textsize(name)
-        draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=(0, 0, 255), outline=(0, 0, 255))
+        draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=color, outline=color)
         draw.text((left + 6, bottom - text_height - 5), name, fill=(255, 255, 255, 255))
 
     # Remove the drawing library from memory as per the Pillow docs
@@ -185,22 +193,22 @@ if __name__ == "__main__":
     # STEP 1: Train the KNN classifier and save it to disk
     # Once the model is trained and saved, you can skip this step next time.
     print("Training KNN classifier...")
-    classifier = train("data/sample-3/train", model_save_path="data/sample-3/models/trained_knn_model.clf", n_neighbors=2)
+    classifier = train("data/knn/train", model_save_path="data/knn/models/trained_knn_model_1.clf", n_neighbors=2)
     print("Training complete!")
 
     # STEP 2: Using the trained classifier, make predictions for unknown images
-    for image_file in os.listdir("data/sample-3/test/few"):
-        full_file_path = os.path.join("data/sample-3/test/few", image_file)
+    for image_file in os.listdir("data/knn/test"):
+        full_file_path = os.path.join("data/knn/test", image_file)
 
         print("Looking for faces in {}".format(image_file))
 
         # Find all people in the image using a trained classifier model
         # Note: You can pass in either a classifier file name or a classifier model instance
-        predictions = predict(full_file_path, model_path="data/sample-3/models/trained_knn_model.clf")
+        predictions = predict(full_file_path, model_path="data/knn/models/trained_knn_model_1.clf")
 
         # Print results on the console
         for name, (top, right, bottom, left) in predictions:
             print("- Found {} at ({}, {})".format(name, left, top))
 
         # Display results overlaid on an image
-        show_prediction_labels_on_image(os.path.join("data/sample-3/test/few", image_file), predictions)
+        show_prediction_labels_on_image(os.path.join("data/knn/test", image_file), predictions)
