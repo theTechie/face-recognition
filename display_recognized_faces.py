@@ -13,12 +13,12 @@ known_faces = [recognize_face.image_to_known_face(str(image_path), image_path.st
 
 print('I just learned to recognize %d persons... \n' % len(known_images))
 
-unknown_path = Path("data/sample-1/unknown_people")
+unknown_path = Path("data/sample-4/unknown")
 unknown_images = list(unknown_path.glob('**/*.jpeg'))
 
 print('I am starting to identify %d unknown persons; lets see how many i know !! \n' % len(unknown_images))
 
-output_path = Path("data/sample-1/output")
+output_path = Path("data/sample-4/output")
 
 for image_to_identify in unknown_images:
     unknown_image = face_recognition.load_image_file(str(image_to_identify))
@@ -33,15 +33,23 @@ for image_to_identify in unknown_images:
     # Create a Pillow ImageDraw Draw instance to draw with
     draw = ImageDraw.Draw(pil_image)
 
+    known_color = (0, 255, 0)
+    unknown_color = (255, 0, 0)
+
     # Loop through each face found in the unknown image
     for name, (top, right, bottom, left), distance in detected_faces:
         # Draw a box around the face using the Pillow module
-        draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
+        if name == 'Unknown':
+            color = unknown_color
+        else:
+            color = known_color
+
+        draw.rectangle(((left, top), (right, bottom)), outline=color)
 
         # Draw a label with a name below the face
         label = name + ' - ' + str("{0:.2f}".format(distance))
         text_width, text_height = draw.textsize(label)
-        draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=(0, 0, 255), outline=(0, 0, 255))
+        draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=color, outline=color)
         draw.text((left + 6, bottom - text_height - 5), label, fill=(255, 255, 255, 255))
 
     # Display the resulting image

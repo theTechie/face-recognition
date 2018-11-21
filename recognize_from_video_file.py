@@ -10,12 +10,12 @@ from pathlib import Path
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Open the input movie file
-input_movie = cv2.VideoCapture("data/videos/everyone.mov")
+input_movie = cv2.VideoCapture("data/videos/krish-krish.mov")
 length = int(input_movie.get(cv2.CAP_PROP_FRAME_COUNT))
 
 # Create an output movie file (make sure resolution/frame rate matches input video!)
 fourcc = cv2.VideoWriter_fourcc(*'MP42')
-output_movie = cv2.VideoWriter('everyone.mp4', fourcc, 29.97, (1920, 1080))
+output_movie = cv2.VideoWriter('krish-krish.mp4', fourcc, 29.97, (1280, 720))
 
 known_path = Path("data/sample-2/jpeg/picked/known")
 known_images = list(known_path.glob('*.jpeg'))
@@ -40,14 +40,22 @@ while True:
 
     detected_faces = recognize_face.recognize(known_faces, rgb_frame)
 
+    known_color = (0, 255, 0)
+    unknown_color = (0, 0, 255)
+
     # Label the results
     for name, (top, right, bottom, left), distance in detected_faces:
+        if name == 'Unknown':
+            color = unknown_color
+        else:
+            color = known_color
+
         # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+        cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
 
         # Draw a label with a name below the face
         label = name + ' - ' + str("{0:.2f}".format(distance))
-        cv2.rectangle(frame, (left, bottom - 25), (right, bottom), (0, 0, 255), cv2.FILLED)
+        cv2.rectangle(frame, (left, bottom - 25), (right, bottom), color, cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, label, (left + 6, bottom - 6), font, 0.5, (255, 255, 255), 1)
 
