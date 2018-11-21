@@ -3,8 +3,8 @@ from PIL import Image, ImageDraw
 from pathlib import Path
 import recognize_face
 
-know_path = Path("data/sample-2/jpeg/picked/known")
-known_images = list(know_path.glob('*.jpeg'))
+known_path = Path("data/sample-2/jpeg/picked/known")
+known_images = list(known_path.glob('*.jpeg'))
 
 known_face_encodings = []
 known_face_names = []
