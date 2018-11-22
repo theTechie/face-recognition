@@ -70,7 +70,7 @@ if __name__ == "__main__":
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_frame = frame[:, :, ::-1]
 
-        detected_faces = predict(rgb_frame, model_path="data/sample-4/models/trained_knn_model.clf")
+        detected_faces = predict(rgb_frame, model_path="models/trained_knn_model.clf")
 
         # Print results on the console
         for name, (top, right, bottom, left) in detected_faces:
