@@ -57,7 +57,7 @@ while True:
         label = name + ' - ' + str("{0:.2f}".format(distance))
         cv2.rectangle(frame, (left, bottom - 25), (right, bottom), color, cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, label, (left + 6, bottom - 6), font, 0.5, (255, 255, 255), 1)
+        cv2.putText(frame, label, (left + 6, bottom - 6), font, 2, (255, 0, 0), 1)
 
     # Write the resulting image to the output video file
     print("Writing frame {} / {}".format(frame_number, length))

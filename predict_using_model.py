@@ -91,7 +91,7 @@ def save_prediction_labels_on_image(img_path, predictions, output_path):
         # Draw a label with a name below the face
         text_width, text_height = draw.textsize(name)
         draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=color, outline=color)
-        draw.text((left + 6, bottom - text_height - 5), name, fill=(255, 255, 255, 255))
+        draw.text((left + 6, bottom - text_height - 5), name, fill=(255, 0, 0, 255))
 
     # Remove the drawing library from memory as per the Pillow docs
     del draw
@@ -102,7 +102,7 @@ def save_prediction_labels_on_image(img_path, predictions, output_path):
 
 
 if __name__ == "__main__":
-    unknown_path = Path("data")
+    unknown_path = Path("input")
     unknown_images = list(unknown_path.glob('**/*.jpeg'))
 
     output_path = Path("output")

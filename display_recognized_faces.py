@@ -50,7 +50,7 @@ for image_to_identify in unknown_images:
         label = name + ' - ' + str("{0:.2f}".format(distance))
         text_width, text_height = draw.textsize(label)
         draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=color, outline=color)
-        draw.text((left + 6, bottom - text_height - 5), label, fill=(255, 255, 255, 255))
+        draw.text((left + 6, bottom - text_height - 5), label, fill=(255, 0, 0, 255))
 
     # Display the resulting image
     # pil_image.show()
