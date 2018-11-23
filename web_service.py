@@ -23,14 +23,8 @@ import pickle
 import face_recognition
 from sklearn import neighbors
 from flask import Flask, jsonify, request, redirect
-from pathlib import Path
-from PIL import Image
-import requests
-from io import BytesIO, StringIO
+from io import BytesIO
 import base64
-from imageio import imread
-from base64 import decodestring
-import re
 
 # You can change this to any folder on your system
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -47,31 +41,14 @@ def allowed_file(filename):
 def upload_image():
     # Check if a valid image file was uploaded
     if request.method == 'POST':
-
-        # if 'file' not in request.files:
-        #     return redirect(request.url)
-
-        image_data = re.sub('^data:image/.+;base64,', '', str(request.data))
-
-        print('printing converted image data --------')
-        print(image_data)
-        
-        #Image.open(BytesIO(base64.b64decode(str)))
-        file = BytesIO(base64.b64decode(str))
-        
-
-        # file = request.files['file']
-
-        # file = imread(BytesIO(base64.b64decode(request.data)))
-
-        # if file.filename == '':
-        #     return redirect(request.url)
+        if 'file' not in request.files:
+            image_data = request.data
+            file = BytesIO(base64.b64decode(image_data))
+        else:
+            file = request.files['file']
 
         if file:
-            # b = BytesIO(file)
-            # im = Image.open(b)
             # The image file seems valid! Detect faces and return the result.
-            # print(im)
             return detect_faces_in_image(file)
 
     # If no valid image file was uploaded, show the file upload form:
