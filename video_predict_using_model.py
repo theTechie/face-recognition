@@ -13,7 +13,7 @@ def predict(X_img, knn_clf=None, model_path=None, distance_threshold=0.6):
     """
     Recognizes faces in given image using a trained KNN classifier
 
-    :param X_img_path: path to image to be recognized
+    :param X_img: path to image to be recognized
     :param knn_clf: (optional) a knn classifier object. if not specified, model_save_path must be specified.
     :param model_path: (optional) path to a pickled knn classifier. if not specified, model_save_path must be knn_clf.
     :param distance_threshold: (optional) distance threshold for face classification. the larger it is, the more chance
@@ -70,7 +70,7 @@ if __name__ == "__main__":
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_frame = frame[:, :, ::-1]
 
-        detected_faces = predict(rgb_frame, model_path="models/trained_knn_model.clf")
+        detected_faces = predict(rgb_frame, model_path="models/trained_knn_model_1.clf")
 
         # Print results on the console
         for name, (top, right, bottom, left) in detected_faces:
